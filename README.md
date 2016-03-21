@@ -2,9 +2,9 @@
 
 Yleisiä linkkejä:
 
-* [Linkki sovellukseeni](https://www.cs.helsinki.fi)
-* [Linkki dokumentaatiooni](https://www.github.com)
+* [Linkki sovellukseeni] (http://lallimyl.users.cs.helsinki.fi/tsoha/)
+* [Linkki dokumentaatiooni](https://github.com/Harrihauki/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.md)
 
 ## Työn aihe
 
-Laita tähän aihekuvaus tai [linkki valmiiseen aiheeseen](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Pokemon-kanta.html) 
+Jalkapallon elo-rankkausjärjestelmä. Järjestelmä laskee ja pitää yllä shakista tutun elo-järjestelmän mukaelman avulla mallia jalkapallojoukkueiden keskinäisistä voimasuhteista.
