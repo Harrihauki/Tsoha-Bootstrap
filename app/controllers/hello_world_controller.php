@@ -14,7 +14,9 @@ class HelloWorldController extends BaseController {
     }
 
     public static function team_list() {
-        View::make('suunnitelmat/team_list.html');
+        $teams = Team::all_by_elo();
+        
+        View::make('teams/index.html', array('teams' => $teams));
     }
     
     public static function esittely() {

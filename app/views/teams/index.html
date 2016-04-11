@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Valioliiga</h1>
+<br>
+<br>
+<p>
+    <a href="http://lallimyl.users.cs.helsinki.fi/tsoha/suunnitelmat/team_add" class="btn btn-default">Lisää joukkue</a>
+    <a href="http://lallimyl.users.cs.helsinki.fi/tsoha/suunnitelmat/match_add" class="btn btn-default">Lisää ottelu</a>
+</p>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Ranking</th>
+            <th>Nimi</th>
+            <th>Elo-vertailuluku</th>
+            <th>Viimeisin ottelu</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for team in teams %}
+        <tr>
+            <td>???</td>
+            <td><a href="{{base_path}}/team/{{team.id}}">{{team.name}}</td>
+            <td>{{team.elo}}</td>
+            <td>???</td>
+            <th><a class="btn btn-default btn-sm" href="{{base_path}}/team/{{team.id}}/edit">Muokkaa</a></th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -35,3 +35,11 @@ $routes->get('/suunnitelmat/team_edit', function() {
 $routes->get('/suunnitelmat/match_edit', function() {
     HelloWorldController::match_edit();
 });
+
+$routes->get('/teams', function() {
+    TeamsController::index();
+});
+
+$routes->get('/team/:id', function($id) {
+    TeamsController::show($id);
+});
