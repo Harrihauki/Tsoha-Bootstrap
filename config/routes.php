@@ -40,6 +40,14 @@ $routes->get('/teams', function() {
     TeamsController::index();
 });
 
+$routes->get('/teams/new', function() {
+    TeamsController::create();
+});
+
+$routes->post('/team', function() {
+    TeamsController::store();
+});
+
 $routes->get('/team/:id', function($id) {
     TeamsController::show($id);
 });

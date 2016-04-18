@@ -48,7 +48,7 @@ class Team extends BaseModel {
     }
 
     public static function all_by_elo() {
-        
+
         $query = DB::connection()->prepare('SELECT * FROM Team ORDER BY elo DESC');
 
         $query->execute();
@@ -64,6 +64,20 @@ class Team extends BaseModel {
         }
 
         return $teams;
+    }
+
+    public function save() {
+
+        $query = DB::connection()->prepare('INSERT INTO Team (name, league_id, elo) VALUES (:name, :league_id, :elo) RETURNING id');
+
+        $query->execute(array('name' => $this->name, 'league_id' => $this->league_id, 'elo' => $this->elo));
+
+        $row = $query->fetch();
+
+        Kint::trace();
+        Kint::dump($row);
+
+        $this->id = $row['id'];
     }
 
 }
