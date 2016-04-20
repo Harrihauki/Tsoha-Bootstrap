@@ -6,6 +6,8 @@ class Team extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
+        $this->validators = array('validate_name',
+            'validate_existance');
     }
 
     public static function all() {
@@ -78,6 +80,42 @@ class Team extends BaseModel {
         Kint::dump($row);
 
         $this->id = $row['id'];
+    }
+    
+    public function validate_name() {
+        $errors = $this->validate_string_length($this->name, 3);
+        
+        return $errors;
+    }
+    
+    public function validate_existance() {
+        $team = $this->find_by_name($this->name);
+        $errors = array();
+        
+        if($team != NULL) {
+            $errors[] = 'Joukkue on jo olemassa!';
+        }
+        
+        return $errors;
+    }
+
+    public function find_by_name($name) {
+        $query = DB::connection()->prepare('SELECT * FROM Team WHERE name = :name LIMIT 1');
+
+        $query->execute(array('name' => $name));
+
+        $row = $query->fetch();
+
+        if ($row) {
+            $team = new Team(array('id' => $row['id'],
+                'name' => $row['name'],
+                'elo' => $row['elo'],
+                'league_id' => $row['league_id']));
+
+            return $team;
+        }
+
+        return null;
     }
 
 }

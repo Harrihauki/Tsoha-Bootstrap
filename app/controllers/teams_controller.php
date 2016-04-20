@@ -31,17 +31,23 @@ class TeamsController extends BaseController {
         
         $params = $_POST;
         
-        $team = new Team(array(
+        $attributes = array(
             'name' => $params['name'],
             'league_id' => '1',
             'elo' => '1000'
-        ));
+        );
+        
+        $team = new Team($attributes);
+        
+        $errors = $team->errors();
 
 //        Kint::dump($params);
-        
-        $team->save();
-        
-        Redirect::to('/team/' . $team->id, array('message' => 'Joukkue lisätty tietokantaan!'));
+        if(count($errors) == 0) {
+            $team->save();
+            Redirect::to('/team/' . $team->id, array('message' => 'Joukkue lisätty tietokantaan!'));
+        } else {
+            View::make('teams/new.html', array('errors' => $errors, 'attributes' => $attributes));
+        }
     }
     
     public static function create() {

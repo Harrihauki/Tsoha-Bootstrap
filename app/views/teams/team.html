@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-
+{% if messages %}
 <div class="alert alert-success">
-  {{message}}
+    {{message}}
 </div>
+{% endif %}
 <h1>{{team.name}}</h1>
 <!-- Painikkeet tähän -->
 <p>
