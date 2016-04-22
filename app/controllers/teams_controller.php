@@ -40,7 +40,8 @@ class TeamsController extends BaseController {
         $team = new Team($attributes);
         
         $errors = $team->errors();
-
+//        Kint::dump($errors);
+//        die();
 //        Kint::dump($params);
         if(count($errors) == 0) {
             $team->save();

@@ -3,14 +3,16 @@
 {% import "macros/forms.html" as forms %}
 {% if messages %}
 <div class="alert alert-success">
-    {{message}}
+    <ul>
+        <li>{{message}}</li>
+    </ul>
 </div>
 {% endif %}
 <h1>{{team.name}}</h1>
 <!-- Painikkeet tähän -->
 <p>
-{{forms.destroy_button("#{base_path}/team/#{team.id}/destroy")}}   
-<a href="{{base_path}}/team/{{team.id}}/edit" class="btn btn-default">Muokkaa</a>
+    {{forms.destroy_button("#{base_path}/team/#{team.id}/destroy")}}   
+    <a href="{{base_path}}/team/{{team.id}}/edit" class="btn btn-default">Muokkaa</a>
 </p>
 <!-- Tiedot alle -->
 <ul>
