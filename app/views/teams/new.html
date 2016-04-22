@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-
-<h1>Lisää joukkue</h1>
+{% import "macros/messages.html" as errors %}
 
 {% if errors %}
 <div class="alert alert-danger">
@@ -12,6 +11,8 @@
     </ul>
 </div>
 {% endif %}
+
+<h1>Lisää joukkue</h1>
 
 <form method="post" action="{{base_path}}/team">
     <div class="form-group">

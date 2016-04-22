@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+{% if messages %}
+<div class="alert alert-success">
+    {{message}}
+</div>
+{% endif %}
 <h1>Valioliiga</h1>
 <br>
 <br>

@@ -46,12 +46,48 @@ class TeamsController extends BaseController {
             $team->save();
             Redirect::to('/team/' . $team->id, array('message' => 'Joukkue lisätty tietokantaan!'));
         } else {
-            View::make('teams/new.html', array('errors' => $errors, 'attributes' => $attributes));
+            Redirect::to('/teams/new', array('errors' => $errors, 'attributes' => $attributes));
         }
     }
     
     public static function create() {
         
         View::make('teams/new.html');
+    }
+    
+    public static function edit($id) {
+        $team = Team::find($id);
+        View::make('team/edit.html', array('attributes' => $team));
+    }
+    
+    public static function update($id) {
+        $params = $_POST;
+        $elo = Team::find_elo($id);
+        
+        $attributes = array(
+            'id' => $id,
+            'name' => $params['name'],
+            'elo' => $elo['elo']
+        );
+        
+        $team = new Team($attributes);
+        $errors = $team->errors();
+        
+        if(count($errors) > 0) {
+            View::make('team/edit.html', array('errors' => $errors, 'attributes' => $attributes));
+        } else {
+            $team->update();
+            
+            Redirect::to('/team/' . $team->id, array('message' => 'Joukkueen muokkaus onnistui!'));
+        }
+    }
+    
+    public static function destroy($id) {
+        
+        $team = new Team(array('id' => $id));
+        
+        $team->destroy();
+        
+        Redirect::to('/teams', array('message' => 'Joukkue poistettu onnistuneesti!'));
     }
 }

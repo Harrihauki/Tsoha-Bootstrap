@@ -76,10 +76,21 @@ class Team extends BaseModel {
 
         $row = $query->fetch();
 
-        Kint::trace();
-        Kint::dump($row);
-
         $this->id = $row['id'];
+    }
+    
+    public function update() {
+
+        $query = DB::connection()->prepare('UPDATE Team set (name, league_id, elo) VALUES (:name, :league_id, :elo) WHERE id = :id');
+
+        $query->execute(array('name' => $this->name, 'league_id' => $this->league_id, 'elo' => $this->elo, 'id' => $this->id));
+    }
+    
+    public function destroy() {
+        
+        $query = DB::connection()->prepare('DELETE FROM Team WHERE id = :id');
+        
+        $query->execute(array('id' => $this->id));
     }
     
     public function validate_name() {
@@ -115,6 +126,22 @@ class Team extends BaseModel {
             return $team;
         }
 
+        return null;
+    }
+    
+    public function find_elo($id) {
+        $query = DB::connection()->prepare('SELECT elo FROM Team WHERE id = :id LIMIT 1');
+        
+        $query->execute(array('id' => $id));
+        
+        $row = $query->fetch();
+        
+        if ($row) {
+            $elo = array('elo' => $row['elo']);
+            
+            return $elo;
+        }
+        
         return null;
     }
 

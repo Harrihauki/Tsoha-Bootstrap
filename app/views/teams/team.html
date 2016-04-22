@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% import "macros/forms.html" as forms %}
 {% if messages %}
 <div class="alert alert-success">
     {{message}}
@@ -8,7 +9,8 @@
 <h1>{{team.name}}</h1>
 <!-- Painikkeet tähän -->
 <p>
-    <button class="btn btn-danger">Poista</button> <a href="{{base_path}}/team/{{team.id}}/edit" class="btn btn-default">Muokkaa</a>
+{{forms.destroy_button("#{base_path}/team/#{team.id}/destroy")}}   
+<a href="{{base_path}}/team/{{team.id}}/edit" class="btn btn-default">Muokkaa</a>
 </p>
 <!-- Tiedot alle -->
 <ul>
