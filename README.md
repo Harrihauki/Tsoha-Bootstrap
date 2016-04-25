@@ -12,6 +12,8 @@ Yleisiä linkkejä:
 * [Linkki joukkueen muokkaussivuun] (http://lallimyl.users.cs.helsinki.fi/tsoha/suunnitelmat/team_edit)
 * [Linkki ottelun muokkaussivuun] (http://lallimyl.users.cs.helsinki.fi/tsoha/suunnitelmat/match_edit)
 
+Sisään voi tässä vaiheessa kirjautua käyttäjänimellä Lalli ja salasanalla höpöhöpö.
+
 ## Työn aihe
 
 Jalkapallon elo-rankkausjärjestelmä. Järjestelmä laskee ja pitää yllä shakista tutun elo-järjestelmän mukaelman avulla mallia jalkapallojoukkueiden keskinäisistä voimasuhteista.

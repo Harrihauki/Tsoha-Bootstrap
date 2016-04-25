@@ -3,7 +3,7 @@
 Yleisiä linkkejä:
 
 * [Linkki sovellukseeni] (http://lallimyl.users.cs.helsinki.fi/tsoha/)
-* [Linkki dokumentaatiooni](https://github.com/Harrihauki/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.md)
+* [Linkki dokumentaatiooni](https://github.com/Harrihauki/Tsoha-Bootstrap/blob/master/doc/Dokumentaatio.pdf)
 * [Linkki joukkuelistaukseen] (http://lallimyl.users.cs.helsinki.fi/tsoha/suunnitelmat/team)
 * [Linkki joukkuesivulle, joka toimii myös ottelulistauksena] (http://lallimyl.users.cs.helsinki.fi/tsoha/suunnitelmat/esittely)
 * [Linkki ottelusivulle] (http://lallimyl.users.cs.helsinki.fi/tsoha/suunnitelmat/ottelu)
