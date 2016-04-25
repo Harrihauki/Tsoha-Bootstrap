@@ -11,7 +11,7 @@
  *
  * @author lallimyl
  */
-class user_controller {
+class UserController extends BaseController {
     
     public static function login() {
         View::make('user/login.html');
@@ -26,7 +26,7 @@ class user_controller {
             View::make('user/login.html', array('error' => 'Väärä käyttäjätunnus tai salasana!', 'username' => $params['username']));
         } else {
             $_SESSION['user'] = $user->id;
-            Redirect::to('/', array('messages' => 'Tervetuloa ' . $user->name . '!'));
+            Redirect::to('/', array('messages' => 'Tervetuloa ' . $user->username . '!'));
         }
     }
 }

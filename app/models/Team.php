@@ -81,7 +81,7 @@ class Team extends BaseModel {
     
     public function update() {
 
-        $query = DB::connection()->prepare('UPDATE Team set (name, league_id, elo) VALUES (:name, :league_id, :elo) WHERE id = :id');
+        $query = DB::connection()->prepare('UPDATE Team SET name = :name, league_id = :league_id, elo = :elo WHERE id = :id');
 
         $query->execute(array('name' => $this->name, 'league_id' => $this->league_id, 'elo' => $this->elo, 'id' => $this->id));
     }

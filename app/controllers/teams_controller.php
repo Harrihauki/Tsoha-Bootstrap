@@ -64,11 +64,12 @@ class TeamsController extends BaseController {
     public static function update($id) {
         $params = $_POST;
         $team = Team::find($id);
-        $errors = $team->errors();
         $attributes = array('id' => $team->id,
-            'name' => $team->name,
+            'name' => $params['name'],
             'league_id' => $team->league_id,
             'elo' => $team->elo);
+        $team = new Team($attributes);
+        $errors = $team->errors();
         
         if(count($errors) > 0) {
             View::make('teams/edit.html', array('errors' => $errors, 'attributes' => $attributes));

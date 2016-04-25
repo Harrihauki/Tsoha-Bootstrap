@@ -1,5 +1,9 @@
 <?php
 
+function check_logged_in() {
+    BaseController::check_logged_in();
+}
+
 $routes->get('/', function() {
     HelloWorldController::index();
 });
@@ -40,11 +44,11 @@ $routes->get('/teams', function() {
     TeamsController::index();
 });
 
-$routes->get('/teams/new', function() {
+$routes->get('/teams/new', 'check_logged_in', function() {
     TeamsController::create();
 });
 
-$routes->post('/team', function() {
+$routes->post('/team', 'check_logged_in', function() {
     TeamsController::store();
 });
 
@@ -52,7 +56,7 @@ $routes->get('/team/:id', function($id) {
     TeamsController::show($id);
 });
 
-$routes->get('/teams/:id/edit', function($id) {
+$routes->get('/teams/:id/edit', 'check_logged_in', function($id) {
     TeamsController::edit($id);
 });
 
@@ -60,14 +64,18 @@ $routes->post('/teams/:id/edit', function($id) {
     TeamsController::update($id);
 });
 
-$routes->post('/team/:id/destroy', function($id) {
+$routes->post('/team/:id/destroy', 'check_logged_in', function($id) {
     TeamsController::destroy($id);
 });
 
-$routes->get('/login', function(){
+$routes->get('/login', function() {
     UserController::login();
 });
 
-$routes->post('/login', function(){
+$routes->post('/login', function() {
     UserController::handle_login();
+});
+
+$routes->post('/logout', function() {
+    UserController::logout();
 });
