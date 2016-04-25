@@ -4,16 +4,18 @@
 {% if messages %}
 <div class="alert alert-success">
     <ul>
-        <li>{{message}}</li>
+        <li>{{messages}}</li>
     </ul>
 </div>
 {% endif %}
 <h1>{{team.name}}</h1>
 <!-- Painikkeet tähän -->
+{% if user_logged_in %}
 <p>
     {{forms.destroy_button("#{base_path}/team/#{team.id}/destroy")}}   
-    <a href="{{base_path}}/team/{{team.id}}/edit" class="btn btn-default">Muokkaa</a>
+    <a href="{{base_path}}/teams/{{team.id}}/edit" class="btn btn-default">Muokkaa</a>
 </p>
+{% endif %}
 <!-- Tiedot alle -->
 <ul>
     <li><strong>Elo-vertailuluku:</strong> {{team.elo}}</li>
@@ -48,7 +50,9 @@
                 {{match.away_elo_after}}
                 {% endif %}
             </td>
+            {% if user_logged_in %}
             <th><a class="btn btn-default btn-sm" href="{{base_path}}/match/{{match.id}}/edit">Muokkaa</a></th>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>

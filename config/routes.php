@@ -52,14 +52,22 @@ $routes->get('/team/:id', function($id) {
     TeamsController::show($id);
 });
 
-$routes->get('/team/:id/edit', function($id) {
+$routes->get('/teams/:id/edit', function($id) {
     TeamsController::edit($id);
 });
 
-$routes->post('/team/:id/edit', function($id) {
+$routes->post('/teams/:id/edit', function($id) {
     TeamsController::update($id);
 });
 
 $routes->post('/team/:id/destroy', function($id) {
     TeamsController::destroy($id);
+});
+
+$routes->get('/login', function(){
+    UserController::login();
+});
+
+$routes->post('/login', function(){
+    UserController::handle_login();
 });
