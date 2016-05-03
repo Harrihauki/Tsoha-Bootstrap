@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+{% import "macros/forms.html" as forms %}
+{% if messages %}
+<div class="alert alert-success">
+    <ul>
+        <li>{{messages}}</li>
+    </ul>
+</div>
+{% endif %}
+
+<h1>{{home.name}} - {{away.name}}</h1>
+
+<br>
+<!-- Painikkeet tähän -->
+<p>
+    {{forms.destroy_button("#{base_path}/match/#{match.id}/destroy")}}
+    <a href="http://lallimyl.users.cs.helsinki.fi/tsoha/match_edit" class="btn btn-default">Muokkaa</a>
+</p>
+
+<br>
+<!-- Tiedot alle -->
+<ul>
+    <li><strong>Pvm:</strong> {{match.date}}</li>
+    <li><strong>Kotijoukkue:</strong> {{home.name}}</li>
+    <li><strong>Vierasjoukkue:</strong> {{away.name}}</li>
+    <li><strong>Kotimaalit:</strong> {{match.home_goals}}</li>
+    <li><strong>Vierasmaalit:</strong> {{match.away_goals}}</li>
+    <li><strong>Kotijoukkueen vertailuluku ennen peliä:</strong> {{match.home_elo_before}}</li>
+    <li><strong>Vierasjoukkueen vertailuluku ennen peliä:</strong> {{match.away_elo_before}}</li>
+    <li><strong>Kotijoukkueen vertailuluku pelin jälkeen:</strong> {{match.home_elo_after}}</li>
+    <li><strong>Vierasjoukkueen vertailuluku pelin jälkeen:</strong> {{match.away_elo_after}}</li>
+</ul>
+
+
+{% endblock %}

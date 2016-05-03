@@ -15,7 +15,10 @@ class TeamsController extends BaseController {
 
     public static function index() {
         $teams = Team::all_by_elo();
-
+//        for($teams as $team) {
+//            // getLastOp
+//            $teams[$index]
+//        }
         View::make('teams/index.html', array('teams' => $teams));
     }
 

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<h1>Lisää ottelu</h1>
+
+<form method="post" action="{{base_path}}/match">
+    <div class="form-group">
+        <label>Ottelun päivämäärä (vvvv-pp-kk):</label>
+        <input type="text" name="date" class="form-control" value="{{attributes}}">
+    </div>
+    
+    <div class="form-group">
+        <label>Kotijoukkue:</label>
+        <input type="text" name="home_name" class="form-control" value="{{attributes}}">
+    </div>
+
+    <div class="form-group">
+        <label>Vierasjoukkue:</label>
+        <input type="text" name="away_name" class="form-control" value="{{attributes}}">
+    </div>
+    
+    <div class="form-group">
+        <label>Kotimaalit:</label>
+        <input type="text" name="home_goals" class="form-control" value="{{attributes}}">
+    </div>
+    
+    <div class="form-group">
+        <label>Kotimaalit:</label>
+        <input type="text" name="away_goals" class="form-control" value="{{attributes}}">
+    </div>
+    
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Lisää ottelu kantaan</button>
+    </div>
+</form>
+{% endblock %}

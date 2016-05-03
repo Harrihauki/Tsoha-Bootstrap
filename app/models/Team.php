@@ -48,6 +48,14 @@ class Team extends BaseModel {
 
         return null;
     }
+    
+    public static function find_by_match($match) {
+        
+        $teams = array('home' => Team::find($match->home_id),
+            'away' => Team::find($match->away_id));
+        
+        return $teams;
+    }
 
     public static function all_by_elo() {
 
@@ -59,7 +67,8 @@ class Team extends BaseModel {
         $teams = array();
 
         foreach ($rows as $row) {
-            $teams[] = new Team(array('id' => $row['id'],
+            $teams[] = new Team(array(
+                'id' => $row['id'],
                 'name' => $row['name'],
                 'elo' => $row['elo'],
                 'league_id' => $row['league_id']));
@@ -140,6 +149,17 @@ class Team extends BaseModel {
             $elo = array('elo' => $row['elo']);
             
             return $elo;
+        }
+        
+        return null;
+    }
+    
+    public function find_id_by_name($name) {
+        
+        $team = $this->find_by_name($name);
+        
+        if($team) {
+            return $team->id;
         }
         
         return null;

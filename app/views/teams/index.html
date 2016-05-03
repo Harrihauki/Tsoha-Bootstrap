@@ -31,12 +31,12 @@
     <tbody>
         {% for team in teams %}
         <tr>
-            <td>???</td>
+            <td>{{ loop.index }}</td>
             <td><a href="{{base_path}}/team/{{team.id}}">{{team.name}}</td>
             <td>{{team.elo}}</td>
             <td>???</td>
             {% if user_logged_in %}
-            <th><a class="btn btn-default btn-sm" href="{{base_path}}/team/{{team.id}}/edit">Muokkaa</a></th>
+            <th><a class="btn btn-default btn-sm" href="{{base_path}}/teams/{{team.id}}/edit">Muokkaa</a></th>
             {% endif %}
         </tr>
         {% endfor %}

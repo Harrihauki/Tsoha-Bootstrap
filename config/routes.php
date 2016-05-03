@@ -40,6 +40,18 @@ $routes->get('/suunnitelmat/match_edit', function() {
     HelloWorldController::match_edit();
 });
 
+$routes->get('/match/:id', function($id) {
+    MatchController::show($id);
+});
+
+$routes->get('/match/new', 'check_logged_in', function() {
+    MatchController::create();
+});
+
+$routes->post('/match', 'check_logged_in', function() {
+    MatchController::store();
+});
+
 $routes->get('/teams', function() {
     TeamsController::index();
 });
