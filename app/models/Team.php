@@ -29,6 +29,41 @@ class Team extends BaseModel {
         return $teams;
     }
 
+    public static function prepare_elos($date) {
+
+        $teams = Team::all();
+
+        foreach ($teams as $team) {
+            reset_elo($team, $date);
+        }
+    }
+
+    private static function reset_elo($team, $date) {
+
+        $match = Match::find_by_team_and_date($team, $date);
+
+        $elo = 1000;
+
+        if ($match == null) {
+            $updated_team = new Team(array('id' => $team->id,
+                'name' => $team->name,
+                'elo' => $elo,
+                'league_id' => $team->league_id));
+            $updated_team->update();
+            return;
+        } else if ($team->id == $match->home_id) {
+            $elo = $match->home_elo_after;
+        } else {
+            $elo = $match->away_elo_after;
+        }
+
+        $updated_team = new Team(array('id' => $team->id,
+            'name' => $team->name,
+            'elo' => $elo,
+            'league_id' => $team->league_id));
+        $updated_team->update();
+    }
+
     public static function find($id) {
 
         $query = DB::connection()->prepare('SELECT * FROM Team WHERE id = :id LIMIT 1');
@@ -48,12 +83,12 @@ class Team extends BaseModel {
 
         return null;
     }
-    
+
     public static function find_by_match($match) {
-        
+
         $teams = array('home' => Team::find($match->home_id),
             'away' => Team::find($match->away_id));
-        
+
         return $teams;
     }
 
@@ -87,35 +122,35 @@ class Team extends BaseModel {
 
         $this->id = $row['id'];
     }
-    
+
     public function update() {
 
         $query = DB::connection()->prepare('UPDATE Team SET name = :name, league_id = :league_id, elo = :elo WHERE id = :id');
 
         $query->execute(array('name' => $this->name, 'league_id' => $this->league_id, 'elo' => $this->elo, 'id' => $this->id));
     }
-    
+
     public function destroy() {
-        
+
         $query = DB::connection()->prepare('DELETE FROM Team WHERE id = :id');
-        
+
         $query->execute(array('id' => $this->id));
     }
-    
+
     public function validate_name() {
         $errors = $this->validate_string_length($this->name, 3);
-        
+
         return $errors;
     }
-    
+
     public function validate_existance() {
         $team = $this->find_by_name($this->name);
         $errors = array();
-        
-        if($team != NULL) {
+
+        if ($team != NULL) {
             $errors[] = 'Joukkue on jo olemassa!';
         }
-        
+
         return $errors;
     }
 
@@ -137,31 +172,31 @@ class Team extends BaseModel {
 
         return null;
     }
-    
+
     public function find_elo($id) {
         $query = DB::connection()->prepare('SELECT elo FROM Team WHERE id = :id LIMIT 1');
-        
+
         $query->execute(array('id' => $id));
-        
+
         $row = $query->fetch();
-        
+
         if ($row) {
             $elo = array('elo' => $row['elo']);
-            
+
             return $elo;
         }
-        
+
         return null;
     }
-    
+
     public function find_id_by_name($name) {
-        
+
         $team = $this->find_by_name($name);
-        
-        if($team) {
+
+        if ($team) {
             return $team->id;
         }
-        
+
         return null;
     }
 
