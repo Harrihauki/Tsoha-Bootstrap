@@ -34,20 +34,20 @@ class Team extends BaseModel {
         $teams = Team::all();
 
         foreach ($teams as $team) {
-            reset_elo($team, $date);
+            Team::reset_elo($team, $date);
         }
     }
 
-    private static function reset_elo($team, $date) {
+    public static function reset_elo($team, $date) {
 
         $match = Match::find_by_team_and_date($team, $date);
 
-        $elo = 1000;
+        $elo;
 
         if ($match == null) {
             $updated_team = new Team(array('id' => $team->id,
                 'name' => $team->name,
-                'elo' => $elo,
+                'elo' => 1000,
                 'league_id' => $team->league_id));
             $updated_team->update();
             return;
@@ -127,7 +127,10 @@ class Team extends BaseModel {
 
         $query = DB::connection()->prepare('UPDATE Team SET name = :name, league_id = :league_id, elo = :elo WHERE id = :id');
 
-        $query->execute(array('name' => $this->name, 'league_id' => $this->league_id, 'elo' => $this->elo, 'id' => $this->id));
+        $query->execute(array('name' => $this->name,
+            'league_id' => $this->league_id,
+            'elo' => $this->elo,
+            'id' => $this->id));
     }
 
     public function destroy() {
@@ -191,7 +194,7 @@ class Team extends BaseModel {
 
     public function find_id_by_name($name) {
 
-        $team = $this->find_by_name($name);
+        $team = Team::find_by_name($name);
 
         if ($team) {
             return $team->id;

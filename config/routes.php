@@ -40,12 +40,12 @@ $routes->get('/suunnitelmat/match_edit', function() {
     HelloWorldController::match_edit();
 });
 
-$routes->get('/match/:id', function($id) {
-    MatchController::show($id);
+$routes->get('/match/new_match', 'check_logged_in', function() {
+    MatchController::create();
 });
 
-$routes->get('/match/new', 'check_logged_in', function() {
-    MatchController::create();
+$routes->get('/match/:id', function($id) {
+    MatchController::show($id);
 });
 
 $routes->post('/match', 'check_logged_in', function() {

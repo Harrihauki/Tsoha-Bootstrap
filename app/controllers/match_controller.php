@@ -20,6 +20,13 @@ class MatchController extends BaseController {
 
         $params = $_POST;
 
+        $date_errors = array();
+        $date_errors = array_merge($date_errors, MatchController::validate_date($params['date']));
+        
+        if (count($date_errors) != 0) {
+            Redirect::to('/match/new_match', array('errors' => $date_errors));
+        }
+        
         $home_id = Team::find_id_by_name($params['home_name']);
         $away_id = Team::find_id_by_name($params['away_name']);
 
@@ -59,18 +66,29 @@ class MatchController extends BaseController {
 
         $match = new Match($attributes);
 
-        //PALAA TEKEMÄÄN TÄMÄ LOPPUUN!!!
-
-        $errors = $team->errors();
+        $errors = $match->errors();
 //        Kint::dump($errors);
 //        die();
 //        Kint::dump($params);
         if (count($errors) == 0) {
-            $team->save();
-            Redirect::to('/team/' . $team->id, array('messages' => 'Joukkue lisätty tietokantaan!'));
+            $match->save();
+            Match::update_all_elos($match);
+            Redirect::to('/match/' . $match->id, array('messages' => 'Ottelu lisätty tietokantaan!'));
         } else {
-            Redirect::to('/teams/new', array('errors' => $errors, 'attributes' => $attributes['name']));
+            Match::update_all_elos($match);
+            Redirect::to('/match/new_match', array('errors' => $errors));
         }
+    }
+    
+    public static function validate_date($date) {
+        
+        $errors = array();
+
+        if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$date)) {
+            $errors[] = 'Päivämäärä väärin!';
+        }
+
+        return $errors;
     }
 
 }
