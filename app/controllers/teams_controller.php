@@ -1,27 +1,24 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of teams_controller
+ * Joukkuekontrolleri käsittelee joukkueita koskevat käskyt
  *
  * @author lallimyl
  */
 class TeamsController extends BaseController {
 
+    /**
+     * Avaa joukkueiden listaussivun
+     */
     public static function index() {
         $teams = Team::all_by_elo();
-//        for($teams as $team) {
-//            // getLastOp
-//            $teams[$index]
-//        }
         View::make('teams/index.html', array('teams' => $teams));
     }
 
+    /**
+     * Avaa halutun joukkueen näkymän
+     * @param type $id Näytettävän joukkueen id.
+     */
     public static function show($id) {
         $team = Team::find($id);
         $matches = Match::find_by_team($id);
@@ -30,6 +27,10 @@ class TeamsController extends BaseController {
             'matches' => $matches));
     }
 
+    /**
+     * Tallentaa parametrien mukaisen joukkueen tietokantaan tai antaa virhe-
+     * ilmoituksen
+     */
     public static function store() {
         
         $params = $_POST;
@@ -43,9 +44,7 @@ class TeamsController extends BaseController {
         $team = new Team($attributes);
         
         $errors = $team->errors();
-//        Kint::dump($errors);
-//        die();
-//        Kint::dump($params);
+
         if(count($errors) == 0) {
             $team->save();
             Redirect::to('/team/' . $team->id, array('messages' => 'Joukkue lisätty tietokantaan!'));
@@ -54,16 +53,28 @@ class TeamsController extends BaseController {
         }
     }
     
+    /**
+     * Avaa joukkueen lisäysnäkymän
+     */
     public static function create() {
         
         View::make('teams/new.html');
     }
     
+    /**
+     * Avaa joukkueen muokkausnäkymän
+     * @param type $id muokattavan joukkueen id.
+     */
     public static function edit($id) {
         $team = Team::find($id);
         View::make('teams/edit.html', array('attributes' => $team));
     }
     
+    /**
+     * Päivittää joukkueen parametrien mukaiseksi tietokantaan tai antaa virhe-
+     * ilmoityksen
+     * @param type $id muokattavan joukkueen id.
+     */
     public static function update($id) {
         $params = $_POST;
         $team = Team::find($id);
@@ -83,6 +94,10 @@ class TeamsController extends BaseController {
         }
     }
     
+    /**
+     * Poistaa halutun joukkueen tietokannasta.
+     * @param type $id Poistettavan joukkueen id.
+     */
     public static function destroy($id) {
         
         $team = new Team(array('id' => $id));

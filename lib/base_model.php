@@ -35,7 +35,7 @@ class BaseModel {
             $errors[] = 'Nimi ei saa olla tyhjä!';
         }
         if (strlen($string) < $length) {
-            $errors[] = 'Nimi on liian lyhyt!';
+            $errors[] = 'Nimen pitää olla vähintään ' . $length . 'merkkiä pitkä!';
         }
 
         return $errors;

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<!-- Sisäänkirjautumissivu -->
+<!-- Rekisteröitymissivu -->
 
 {% if messages %}
 <div class="alert alert-success">
@@ -19,9 +19,9 @@
 </div>
 {% endif %}
 
-<h1>Kirjaudu sisään</h1>
+<h1>Rekisteröidy</h1>
 
-<form method="post" action="{{base_path}}/login">
+<form method="post" action="{{base_path}}/register">
     <div class="form-group">
         <label>Käyttäjätunnus</label>
         <input type="text" class="form-control" name="username" value="{{username}}">
@@ -31,7 +31,12 @@
         <label>Salasana</label>
         <input type="password" class="form-control" name="password">
     </div>
+    
+    <div class="form-group">
+        <label>Salasana uudestaan</label>
+        <input type="password" class="form-control" name="password_again">
+    </div>
 
-    <button type="submit" class="btn btn-primary">Kirjaudu sisään</button>
+    <button type="submit" class="btn btn-primary">Rekisteröidy</button>
 </form>
 {% endblock %}

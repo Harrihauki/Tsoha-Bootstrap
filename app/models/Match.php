@@ -1,13 +1,8 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of Match
+ * Ottelun malli käsittelee otteluita koskevat toiminnot tietokannan ja ohjelmiston
+ * rajapinnassa
  *
  * @author lallimyl
  */
@@ -22,6 +17,10 @@ class Match extends BaseModel {
             'validate_date');
     }
 
+    /**
+     * Hakee kaikki ottelut tietokannasta
+     * @return \Match Lista otteluista
+     */
     public static function all() {
 
         $query = DB::connection()->prepare('SELECT * FROM Match');
@@ -48,6 +47,11 @@ class Match extends BaseModel {
         return $matches;
     }
 
+    /**
+     * Etsii halutun ottelun tietokannasta id:n perusteella
+     * @param type $id Halutun ottelun id.
+     * @return \Match Haluttu ottelu tai null, jos ottelua ei ole.
+     */
     public static function find($id) {
 
         $query = DB::connection()->prepare('SELECT * FROM Match WHERE id = :id LIMIT 1');
@@ -75,6 +79,11 @@ class Match extends BaseModel {
         return null;
     }
 
+    /**
+     * Hakee kannasta kaikki ottelut, jossa haluttu joukkue on pelannut
+     * @param type $teamid Joukkueen id.
+     * @return \Match Lista otteluista, joissa haluttu joukkue on pelannut.
+     */
     public static function find_by_team($teamid) {
 
         $query = DB::connection()->prepare('SELECT DISTINCT * FROM Match WHERE home_id = :id OR away_id = :id ORDER BY date DESC');
@@ -101,9 +110,15 @@ class Match extends BaseModel {
         return $matches;
     }
 
+    /**
+     * Hakee ottelun, jossa haluttu joukkue on pelannut haluttuna päivänä
+     * @param type $team haluttu joukkue
+     * @param type $date haluttu päivä
+     * @return \Match ottelu tai null, jos halutunlaista ottelua ei ole.
+     */
     public static function find_by_team_and_date($team, $date) {
 
-        $query = DB::connection()->prepare('SELECT * FROM Match WHERE (home_id = :id OR away_id = :id) AND date < :date ORDER BY date DESC LIMIT 1');
+        $query = DB::connection()->prepare('SELECT DISTINCT * FROM Match WHERE (home_id = :id OR away_id = :id) AND date < :date ORDER BY date DESC LIMIT 1');
 
         $query->execute(array('id' => $team->id,
             'date' => $date));
@@ -129,33 +144,9 @@ class Match extends BaseModel {
         return null;
     }
 
-    public static function new_elo($result, $home_elo_before, $away_elo_before, $home_goals, $away_goals) {
-
-        $difference = Match::number_of_goals($home_goals, $away_goals);
-
-        return round(30 * $difference * ($result - Match::expected_result($home_elo_before, $away_elo_before)));
-    }
-
-    private static function number_of_goals($home_goals, $away_goals) {
-
-        $difference = abs($home_goals - $away_goals);
-
-        if ($difference <= 1) {
-            return 1;
-        } else if ($difference == 2) {
-            return 1.5;
-        } else {
-            return (11 + $difference) / 8;
-        }
-    }
-
-    private static function expected_result($home_elo_before, $away_elo_before) {
-
-        $difference = abs($home_elo_before + 100 - $away_elo_before);
-
-        return 1 / (pow(10, -$difference / 400) + 1);
-    }
-
+    /**
+     * Tallentaa uuden ottelun teitokantaan.
+     */
     public function save() {
 
         $query = DB::connection()->prepare('INSERT INTO Match (home_id, away_id, date, home_goals, away_goals, home_elo_before, home_elo_after, away_elo_before, away_elo_after) VALUES (:home_id, :away_id, :date, :home_goals, :away_goals, :home_elo_before, :home_elo_after, :away_elo_before, :away_elo_after) RETURNING id');
@@ -167,6 +158,10 @@ class Match extends BaseModel {
         $this->id = $row['id'];
     }
 
+    /**
+     * Validoi, onko ovatko kyseisen ottelun joukkueet olemassa.
+     * @return string Mahdolliset virheilmoitukset
+     */
     public function validate_team_existance() {
         $home_team = Team::find($this->home_id);
         $away_team = Team::find($this->away_id);
@@ -187,6 +182,10 @@ class Match extends BaseModel {
         return $errors;
     }
 
+    /**
+     * Tarkistaa, että maalimäärät ovat kelvolliset.
+     * @return string Mahdolliset virheilmoitukset
+     */
     public function validate_scores() {
 
         $errors = array();
@@ -198,6 +197,10 @@ class Match extends BaseModel {
         return $errors;
     }
 
+    /**
+     * Tarkistaa, että päivämäärä on kelpo.
+     * @return string Mahdolliset virheilmoitukset
+     */
     public function validate_date() {
 
         $errors = array();
@@ -209,6 +212,12 @@ class Match extends BaseModel {
         return $errors;
     }
 
+    /**
+     * Päivittää kaikkien syötteenä tulevan ottelun jälkeen pelattujen otteluiden
+     * vertailulukutiedot ja samalla ottelun jälkeen pelanneiden joukkueiden
+     * vertailuluvut.
+     * @param type $match Ottelu, jonka jälkeen pelatut ottelut päivitetään.
+     */
     public function update_all_elos($match) {
 
         $query = DB::connection()->prepare('SELECT * FROM Match WHERE date >= :date ORDER BY date ASC');
@@ -223,43 +232,36 @@ class Match extends BaseModel {
             $home_team = Team::find($row['home_id']);
             $away_team = Team::find($row['away_id']);
 
-            if ($home_team != null & $away_team != null) {
-                $home_result;
-                $away_result;
+            if ($home_team != null && $away_team != null) {
+                $home_goals = $row['home_goals'];
+                $away_goals = $row['away_goals'];
 
-                if ($row['home_goals'] - $row['away_goals'] == 0) {
-                    $home_result = 0.5;
-                    $away_result = 0.5;
-                } else if ($row['home_goals'] - $row['away_goals'] < 0) {
-                    $home_result = 0;
-                    $away_result = 1;
-                } else {
-                    $home_result = 1;
-                    $away_result = 0;
-                }
+                $results = MatchController::results($home_goals, $away_goals);
+                $home_result = $results['home_result'];
+                $away_result = $results['away_result'];
 
                 $updated_match = new Match(array('id' => $row['id'],
                     'home_id' => $row['home_id'],
                     'away_id' => $row['away_id'],
                     'date' => $row['date'],
-                    'home_goals' => $row['home_goals'],
-                    'away_goals' => $row['away_goals'],
+                    'home_goals' => $home_goals,
+                    'away_goals' => $away_goals,
                     'adder_id' => $row['adder_id'],
                     'home_elo_before' => $home_team->elo,
                     'away_elo_before' => $away_team->elo,
-                    'home_elo_after' => $home_team->elo + Match::new_elo($home_result, $home_team->elo, $away_team->elo, $row['home_goals'], $row['away_goals']),
-                    'away_elo_after' => $away_team->elo + Match::new_elo($away_result, $home_team->elo, $away_team->elo, $row['home_goals'], $row['away_goals'])));
+                    'home_elo_after' => $home_team->elo + MatchController::new_elo($home_result, $home_team->elo + 100, $away_team->elo, $row['home_goals'], $row['away_goals']),
+                    'away_elo_after' => $away_team->elo + MatchController::new_elo($away_result, $away_team->elo, $home_team->elo + 100, $row['home_goals'], $row['away_goals'])));
 
                 $updated_match->update();
 
                 $updated_home_team = new Team(array('id' => $home_team->id,
-                    'league_id' => $home_team->league_id,
                     'name' => $home_team->name,
+                    'league_id' => $home_team->league_id,
                     'elo' => $updated_match->home_elo_after));
 
                 $updated_away_team = new Team(array('id' => $away_team->id,
-                    'league_id' => $away_team->league_id,
                     'name' => $away_team->name,
+                    'league_id' => $away_team->league_id,
                     'elo' => $updated_match->away_elo_after));
 
                 $updated_home_team->update();
@@ -268,6 +270,9 @@ class Match extends BaseModel {
         }
     }
 
+    /**
+     * Päivittää mallia tietokannassa vastaavan ottelun tiedot halutuiksi.
+     */
     public function update() {
 
         $query = DB::connection()->prepare('UPDATE Match SET home_id = :home_id, away_id = :away_id, date = :date, home_goals = :home_goals, away_goals = :away_goals, home_elo_before = :home_elo_before, home_elo_after = :home_elo_after, away_elo_before = :away_elo_before, away_elo_after = :away_elo_after WHERE id = :id');
@@ -282,6 +287,16 @@ class Match extends BaseModel {
             'away_elo_before' => $this->away_elo_before,
             'away_elo_after' => $this->away_elo_after,
             'id' => $this->id));
+    }
+
+    /**
+     * Poistaa mallia vastaavan ottelun tietokannasta.
+     */
+    public function destroy() {
+
+        $query = DB::connection()->prepare('DELETE FROM Match WHERE id = :id');
+
+        $query->execute(array('id' => $this->id));
     }
 
 }

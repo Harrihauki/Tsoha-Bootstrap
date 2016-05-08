@@ -52,6 +52,18 @@ $routes->post('/match', 'check_logged_in', function() {
     MatchController::store();
 });
 
+$routes->get('/match/:id/edit', 'check_logged_in', function($id) {
+    MatchController::edit($id);
+});
+
+$routes->post('/match/:id/edit', function($id) {
+    MatchController::update($id);
+});
+
+$routes->post('/match/:id/destroy', 'check_logged_in', function($id) {
+    MatchController::destroy($id);
+});
+
 $routes->get('/teams', function() {
     TeamsController::index();
 });
@@ -90,4 +102,12 @@ $routes->post('/login', function() {
 
 $routes->post('/logout', function() {
     UserController::logout();
+});
+
+$routes->get('/register', function() {
+    UserController::register();
+});
+
+$routes->post('/register', function() {
+    UserController::handle_register();
 });

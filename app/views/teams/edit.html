@@ -11,12 +11,13 @@
 </div>
 {% endif %}
 
+<!--Joukkeiden muokkauslomake-->
 <h1>Muokkaa joukkuetta</h1>
 
 <form method="post" action="{{base_path}}/teams/{{attributes.id}}/edit">
     <div class="form-group">
         <label>Joukkueen nimi:</label>
-        <input type="text" name="name" class="form-control">
+        <input type="text" name="name" value="{{attributes.name}}" class="form-control">
     </div>
 
     <div class="form-group">
