@@ -17,3 +17,5 @@ Sisään voi tässä vaiheessa kirjautua käyttäjänimellä Lalli ja salasanall
 ## Työn aihe
 
 Jalkapallon elo-rankkausjärjestelmä. Järjestelmä laskee ja pitää yllä shakista tutun elo-järjestelmän mukaelman avulla mallia jalkapallojoukkueiden keskinäisistä voimasuhteista.
+
+HUOM ARVOSTELIJALLE! Arto sanoi, että ottelu käy hyvin monesta-moneen-suhteeksi. Yhdistäähän ottelu monia joukkueita moniin muihin joukkueisiin.
