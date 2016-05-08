@@ -1,6 +1,6 @@
 # Tietokantasovelluksen esittelysivu
 
-##HUOM ARVOSTELIJALLE! Viimeisimmät päivitykset eivät ole users-palvelimella, koska jouduin operoimaan windowsilla ikävän sattuman vuoksi. Testausta varten joudut siis valitettavasti itse ajamaan projektin palvelimelle. Sen kuitenkin pitäisi tapahtua ajo-näppäintä painamalla NetBeansissä, kuten kurssimateriaalissa ohjeistettu. Pahoittelut! Lisäksi haluan varuiksi huomauttaa, että Arto sanoi, että ottelu käy hyvin monesta-moneen-suhteeksi. Yhdistäähän ottelu monia joukkueita moniin muihin joukkueisiin.
+##HUOM ARVOSTELIJALLE! Viimeisimmät päivitykset eivät ole users-palvelimella, koska jouduin operoimaan windowsilla ikävän sattuman vuoksi. Testausta varten joudut siis valitettavasti itse ajamaan projektin palvelimelle. Sen kuitenkin pitäisi tapahtua ajo-näppäintä painamalla NetBeansissä, kuten kurssimateriaalissa ohjeistettu. Pahoittelut! Viimehetken testauskin jäi vähäiselle huomiolle tästä johtuen.. Lisäksi haluan varuiksi huomauttaa, että Arto sanoi, että ottelu käy hyvin monesta-moneen-suhteeksi. Yhdistäähän ottelu monia joukkueita moniin muihin joukkueisiin.
 
 Yleisiä linkkejä:
 
